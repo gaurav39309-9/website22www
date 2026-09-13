@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Gaurav Mudaliar — Full-Stack Developer, 5 years experience. Shopify, WordPress, custom apps, mobile apps, AI chatbots, games.">
+<meta name="theme-color" content="#07070f">
+<link rel="preconnect" href="https://cdnjs.cloudflare.com">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<title>Gaurav Mudaliar | Full-Stack Developer • 5 Years Experience</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#07070f;--neon:#00ffcc;--violet:#8b5cf6;--pink:#ff2fb3;--orange:#ff9a3c;--card:rgba(255,255,255,.06)}
+body{background:var(--bg);color:#fff;font-family:'Space Grotesk',sans-serif,'Noto Color Emoji';overflow-x:hidden}
+*{cursor:none!important}
+a,button{touch-action:manipulation}
+a{color:inherit;text-decoration:none}
+#particles{position:fixed;inset:0;z-index:0;opacity:.7}
+.blob{position:fixed;border-radius:50%;filter:blur(120px);z-index:0;opacity:.45;pointer-events:none;animation:float 12s ease-in-out infinite alternate}
+.blob1{width:550px;height:550px;background:radial-gradient(circle,#8b5cf6,transparent 70%);top:-150px;left:-150px}
+.blob2{width:500px;height:500px;background:radial-gradient(circle,#ff2fb3,transparent 70%);bottom:-100px;right:-100px;animation-delay:-6s}
+.blob3{width:400px;height:400px;background:radial-gradient(circle,#00ffcc,transparent 70%);top:40%;left:60%;opacity:.25}
+@keyframes float{to{transform:translate(80px,60px) scale(1.2)}}
+/* cursor */
+.cursor{position:fixed;left:50%;top:40%;width:22px;height:22px;border:2px solid var(--neon);background:rgba(0,255,204,.12);box-shadow:0 0 14px rgba(0,255,204,.8),inset 0 0 8px rgba(0,255,204,.35);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .2s,height .2s,background .2s}
+.cursor-dot{position:fixed;left:50%;top:40%;width:6px;height:6px;background:var(--pink);box-shadow:0 0 10px var(--pink);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%)}
+.cursor.big{width:46px;height:46px;border-color:var(--pink);background:rgba(255,47,179,.12)}
+/* preloader */
+#loader{position:fixed;inset:0;background:#050508;z-index:10000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;transition:opacity .6s}
+#loader h1{font-family:'Syne',sans-serif;font-size:clamp(2rem,6vw,4rem);background:linear-gradient(90deg,var(--neon),var(--violet),var(--pink));-webkit-background-clip:text;background-clip:text;color:transparent;animation:pulse 1.2s infinite alternate}
+@keyframes pulse{to{letter-spacing:6px;filter:drop-shadow(0 0 20px #8b5cf6)}}
+.loadbar{width:260px;height:4px;background:#222;border-radius:10px;overflow:hidden}
+.loadbar span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--neon),var(--pink));animation:load 1.8s forwards}
+@keyframes load{to{width:100%}}
+/* nav */
+nav{position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:100;width:min(1100px,92%);display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 22px;background:rgba(10,10,20,.6);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.12);border-radius:100px}
+.logo{font-family:'Syne',sans-serif;font-weight:800;letter-spacing:1px;display:flex;align-items:center;gap:10px;flex-shrink:0;white-space:nowrap}
+.exp-link{flex-shrink:0;display:flex}
+.exp-img{height:32px;border-radius:100px;box-shadow:0 0 18px rgba(0,255,204,.6);flex-shrink:0;display:block}
+.logo b{color:var(--neon)}
+.nav-links{display:flex;gap:22px;font-size:.9rem;opacity:.9}
+.music-btn{display:flex;align-items:center;gap:10px;background:linear-gradient(90deg,var(--violet),var(--pink));border:none;color:#fff;padding:9px 16px;border-radius:100px;font-weight:700;cursor:pointer;flex-shrink:0;white-space:nowrap}
+.theme-dots{display:flex;gap:6px;align-items:center;flex-shrink:0}
+.tdot{width:22px;height:22px;border-radius:50%;border:2px solid rgba(255,255,255,.35);padding:0}
+.tdot.active{border-color:var(--neon);box-shadow:0 0 10px var(--neon);transform:scale(1.18)}
+.eq{display:flex;gap:2px;align-items:end;height:16px}
+.eq i{width:3px;background:#fff;display:block;border-radius:2px;height:5px}
+.playing .eq i{animation:eq .7s infinite alternate}
+.eq i:nth-child(2){animation-delay:.15s}.eq i:nth-child(3){animation-delay:.3s}.eq i:nth-child(4){animation-delay:.45s}
+@keyframes eq{to{height:16px}}
+/* hero */
+.hero{position:relative;z-index:1;min-height:100vh;display:grid;grid-template-columns:1.1fr .9fr;gap:20px;align-items:center;width:min(1200px,93%);margin:0 auto;padding:130px 0 40px}
+.badge{display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(0,255,204,.4);background:rgba(0,255,204,.08);padding:8px 16px;border-radius:100px;font-size:.8rem;margin-bottom:18px}
+.dot{width:8px;height:8px;background:#00ff88;border-radius:50%;box-shadow:0 0 12px #00ff88;animation:blink 1s infinite alternate}
+@keyframes blink{to{opacity:.3}}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(2.8rem,7vw,5.2rem);line-height:.95}
+.grad{background:linear-gradient(90deg,#00ffcc,#8b5cf6,#ff2fb3,#ff9a3c);-webkit-background-clip:text;background-clip:text;color:transparent;background-size:300% 100%;animation:grad 5s linear infinite}
+@keyframes grad{to{background-position:300% 0}}
+.type{font-family:'JetBrains Mono',monospace;color:var(--neon);margin:14px 0;font-size:1.1rem;min-height:28px}
+.hero p.sub{opacity:.75;line-height:1.6;max-width:520px}
+.btns{display:flex;gap:14px;margin-top:26px;flex-wrap:wrap}
+.btn{padding:15px 28px;border-radius:100px;font-weight:700;border:none;background:linear-gradient(90deg,var(--violet),var(--pink));color:#fff;box-shadow:0 10px 30px rgba(139,92,246,.35);transition:.3s;cursor:pointer}
+.btn.primary{background:linear-gradient(90deg,var(--violet),var(--pink));color:#fff;border:none;box-shadow:0 10px 30px rgba(139,92,246,.35)}
+.hire-btn{background:#00ffcc!important;color:#000!important;box-shadow:0 10px 35px rgba(0,255,204,.55)!important}
+.btn:hover{transform:translateY(-3px) scale(1.03)}
+.stats{display:flex;gap:14px;margin-top:30px;flex-wrap:wrap}
+.stat{background:var(--card);border:1px solid rgba(255,255,255,.12);padding:14px 20px;border-radius:18px;min-width:130px}
+.stat h3{font-size:1.6rem;color:var(--neon)}
+/* 3D stage */
+.stage{position:relative;height:560px;background:radial-gradient(circle at 50% 60%,rgba(139,92,246,.35),transparent 65%),rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.12);border-radius:32px;overflow:hidden}
+#hero3d{width:100%;height:100%;display:block}
+.stage-label{position:absolute;bottom:16px;left:16px;right:16px;display:flex;justify-content:space-between;align-items:center;background:rgba(0,0,0,.5);backdrop-filter:blur(12px);padding:12px 16px;border-radius:16px;font-size:.8rem;border:1px solid rgba(0,255,204,.3)}
+.vinyl{width:46px;height:46px;border-radius:50%;background:conic-gradient(#111 0 10%,#fff 10% 12%,#111 12% 22%,#00ffcc 22% 24%,#111 24%);animation:spin 3s linear infinite;animation-play-state:paused;border:2px solid #333}
+.playing-all .vinyl{animation-play-state:running}
+@keyframes spin{to{transform:rotate(360deg)}}
+/* marquee */
+.marquee{position:relative;z-index:1;border-top:1px solid rgba(255,255,255,.1);border-bottom:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.02);overflow:hidden;white-space:nowrap;padding:16px 0;margin:20px 0}
+.marquee span{font-family:'Syne',sans-serif;font-size:1.2rem;margin:0 22px;opacity:.9}
+.marquee .track{display:inline-block;animation:mar 18s linear infinite}
+@keyframes mar{to{transform:translateX(-50%)}}
+/* sections */
+section.block{position:relative;z-index:1;width:min(1200px,93%);margin:70px auto}
+.sec-title{font-family:'Syne',sans-serif;font-size:clamp(1.8rem,4vw,2.8rem);margin-bottom:8px}
+.sec-sub{opacity:.6;margin-bottom:28px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.card{background:linear-gradient(180deg,rgba(255,255,255,.09),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.12);border-radius:24px;padding:26px;transition:.35s;position:relative;overflow:hidden;transform-style:preserve-3d}
+.card:hover{transform:translateY(-8px);border-color:var(--neon);box-shadow:0 20px 60px rgba(0,255,204,.15)}
+.card h3{margin:12px 0 8px;font-size:1.2rem}
+.card p,.card li{opacity:.75;font-size:.92rem;line-height:1.6}
+.icon{font-size:2rem}
+.card::after{content:'';position:absolute;inset:0;background:linear-gradient(120deg,transparent 30%,rgba(255,255,255,.12) 50%,transparent 70%);transform:translateX(-100%);transition:.6s}
+.card:hover::after{transform:translateX(100%)}
+/* portfolio */
+.filters{display:flex;gap:10px;flex-wrap:wrap;margin:20px 0}
+.fbtn{padding:10px 20px;border-radius:100px;background:linear-gradient(90deg,var(--violet),var(--pink));border:none;color:#fff;cursor:pointer;font-weight:700}
+.fbtn.active{outline:2px solid var(--neon);outline-offset:2px;transform:translateY(-2px)}
+.proj-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.proj{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:20px;transition:transform .3s,border-color .3s,box-shadow .3s;animation:cardIn .55s cubic-bezier(.2,.8,.25,1) both}
+@keyframes cardIn{from{opacity:0;transform:translateY(26px) scale(.97)}to{opacity:1;transform:none}}
+.proj:hover{transform:scale(1.03);border-color:var(--pink)}
+.proj small{display:inline-block;padding:5px 12px;border-radius:100px;font-size:.72rem;margin-bottom:10px;background:rgba(0,255,204,.12);border:1px solid rgba(0,255,204,.3)}
+.proj.shop small{background:rgba(149,255,0,.12);border-color:#95ff00;color:#c6ff7a}
+.proj.wp small{background:rgba(56,189,248,.15);border-color:#38bdf8;color:#7dd3fc}
+.proj.custom small{background:rgba(255,154,60,.15);border-color:var(--orange);color:#ffd19a}
+.proj.app small{background:rgba(255,47,179,.15);border-color:var(--pink);color:#ff9ad5}
+.proj.ai small{background:rgba(139,92,246,.2);border-color:var(--violet);color:#c4b5fd}
+.proj a.link{color:var(--neon);font-family:'JetBrains Mono',monospace;font-size:.85rem;word-break:break-all}
+/* timeline */
+.timeline{border-left:2px solid rgba(0,255,204,.3);margin-left:10px;padding-left:26px;display:grid;gap:22px}
+.t-item{position:relative;background:rgba(255,255,255,.04);padding:20px;border-radius:18px;border:1px solid rgba(255,255,255,.1)}
+.t-item::before{content:'';position:absolute;left:-35px;top:22px;width:14px;height:14px;background:var(--neon);border-radius:50%;box-shadow:0 0 15px var(--neon)}
+/* contact */
+.contact-box{display:grid;grid-template-columns:1fr 1fr;gap:18px;background:linear-gradient(135deg,rgba(139,92,246,.2),rgba(255,47,179,.15),rgba(0,255,204,.12));border:1px solid rgba(255,255,255,.15);border-radius:28px;padding:32px}
+.contact-box a.big{font-size:1.1rem;color:var(--neon);word-break:break-all}
+/* game */
+.game-box{background:linear-gradient(180deg,rgba(0,255,204,.08),rgba(255,47,179,.08));border:1px solid rgba(0,255,204,.35);border-radius:28px;padding:24px;position:relative;overflow:hidden}
+#gameCanvas{width:100%;height:380px;background:#050510;border-radius:18px;border:1px solid rgba(255,255,255,.12);touch-action:none}
+.game-hud{display:flex;gap:12px;align-items:center;justify-content:space-between;margin:14px 0;flex-wrap:wrap}
+.hud-pill{background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.15);padding:8px 16px;border-radius:100px;font-family:'JetBrains Mono',monospace}
+.dpad{display:flex;gap:8px;justify-content:center;margin-top:12px}
+.dpad button{width:52px;height:52px;border-radius:14px;background:linear-gradient(90deg,var(--violet),var(--pink));border:none;color:#fff;font-size:1.1rem;cursor:pointer;font-weight:800}
+.dpad button:active{transform:scale(.92)}
+/* checklist */
+.check-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:20px}
+.check{background:rgba(0,255,204,.05);border:1px solid rgba(0,255,204,.2);border-radius:14px;padding:12px 14px;font-size:.86rem;animation:cardIn .5s both}
+.check b{color:var(--neon);margin-right:6px}
+/* hacker mode */
+.hack-box{position:relative;border:1px solid rgba(0,255,136,.3);border-radius:24px;overflow:hidden;background:#020604;padding:26px}
+#matrix{position:absolute;inset:0;width:100%;height:100%;opacity:.35}
+.terminal{position:relative;background:rgba(0,0,0,.75);border:1px solid rgba(0,255,136,.4);border-radius:16px;overflow:hidden;box-shadow:0 0 30px rgba(0,255,136,.12)}
+.t-head{display:flex;gap:8px;align-items:center;padding:10px 14px;background:rgba(0,255,136,.07);font-family:'JetBrains Mono',monospace;font-size:.78rem;color:#9dffc7}
+.t-head i{width:11px;height:11px;border-radius:50%;background:#ff5f57}
+.t-head i:nth-child(2){background:#febc2e}.t-head i:nth-child(3){background:#28c840}
+.t-head span{margin-left:8px;opacity:.8}
+.t-body{padding:16px;font-family:'JetBrains Mono',monospace;color:#00ff88;font-size:.86rem;min-height:196px;line-height:1.9;white-space:pre-wrap}
+.tcur{animation:blink 1s infinite;color:#00ff88}
+.hskills{position:relative;margin-top:18px;display:grid;gap:10px}
+.hskill{display:grid;grid-template-columns:130px 1fr 48px;gap:10px;align-items:center;font-size:.85rem}
+.hbar{height:10px;background:rgba(255,255,255,.08);border-radius:10px;overflow:hidden}
+.hbar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#00ff88,#00ffcc);border-radius:10px;transition:width 1.4s ease}
+.hskill b{color:#00ff88;font-family:'JetBrains Mono',monospace;text-align:right}
+/* ai assistant */
+.ai-box{background:rgba(255,255,255,.04);border:1px solid rgba(139,92,246,.35);border-radius:24px;padding:22px}
+.ai-modes{display:flex;gap:10px;align-items:center;margin-bottom:14px;flex-wrap:wrap}
+.ai-hint{opacity:.6;font-size:.85rem;margin-left:auto}
+.ai-msgs{height:300px;overflow-y:auto;display:flex;flex-direction:column;gap:10px;background:rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:14px;margin-bottom:12px}
+.msg{max-width:88%;padding:10px 14px;border-radius:14px;font-size:.9rem;line-height:1.55;word-break:break-word}
+.msg.bot{background:rgba(139,92,246,.18);border:1px solid rgba(139,92,246,.4);align-self:flex-start}
+.msg.user{background:rgba(0,255,204,.12);border:1px solid rgba(0,255,204,.4);align-self:flex-end}
+.msg img{max-width:100%;border-radius:12px;margin-top:8px}
+.msg a{color:var(--neon)}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.chip{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);color:#fff;border-radius:100px;padding:7px 14px;font-size:.8rem;cursor:pointer}
+.chip:hover{border-color:var(--neon)}
+.ai-row{display:flex;gap:10px}
+.ai-row input{flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.18);color:#fff;border-radius:100px;padding:13px 18px;font-size:.92rem;font-family:inherit;min-width:0}
+.ai-row input:focus{outline:none;border-color:var(--neon)}
+.ai-row .btn{padding:13px 26px;flex-shrink:0}
+/* action buttons */
+.action-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:14px}
+.action-row .btn{flex:1;min-width:150px;text-align:center}
+.dock{position:fixed;right:16px;bottom:16px;z-index:200;display:flex;flex-direction:column;gap:10px}
+.dock a{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.4rem;background:rgba(10,10,20,.8);backdrop-filter:blur(12px);border:1px solid rgba(0,255,204,.4);transition:.3s}
+.dock a:hover{transform:scale(1.12);box-shadow:0 0 20px rgba(0,255,204,.5)}
+/* music player */
+#player{position:fixed;top:78px;left:50%;transform:translateX(-50%) translateY(-12px);z-index:99;width:min(420px,92%);background:rgba(10,10,22,.85);backdrop-filter:blur(18px);border:1px solid rgba(0,255,204,.35);border-radius:20px;padding:14px 18px;opacity:0;pointer-events:none;transition:.3s}
+#player.open{opacity:1;pointer-events:auto;transform:translateX(-50%) translateY(0)}
+.ptitle{font-weight:700;font-size:.92rem;display:flex;justify-content:space-between;margin-bottom:10px}
+.ptitle span{color:var(--neon);font-family:'JetBrains Mono',monospace}
+.prow{display:flex;gap:8px}
+.prow button{flex:1;padding:10px 0;border:none;border-radius:12px;background:linear-gradient(90deg,var(--violet),var(--pink));color:#fff;font-size:1rem;cursor:pointer;font-weight:700}
+.prow button:active{transform:scale(.94)}
+.pbar{height:6px;background:rgba(255,255,255,.12);border-radius:10px;margin-top:10px;overflow:hidden}
+.pbar span{display:block;height:100%;width:70%;background:linear-gradient(90deg,var(--neon),var(--pink));border-radius:10px}
+.pstatus{font-size:.8rem;opacity:.75;margin-top:8px;font-family:'JetBrains Mono',monospace}
+.dl-btn{display:block;text-align:center;width:100%;margin-top:10px;padding:11px;border:none;border-radius:12px;background:linear-gradient(90deg,var(--violet),var(--pink));color:#fff;font-weight:800;cursor:pointer}
+.dl-btn:active{transform:scale(.97)}
+.lyr{margin-top:10px;background:#020604;border:1px solid rgba(0,255,136,.35);border-radius:12px;overflow:hidden}
+.lyr-head{padding:7px 12px;background:rgba(0,255,136,.08);font-family:'JetBrains Mono',monospace;font-size:.72rem;color:#9dffc7;display:flex;justify-content:space-between;align-items:center}
+.nudge{display:flex;gap:6px;align-items:center}
+.nudge button{background:rgba(0,255,136,.12);border:1px solid rgba(0,255,136,.4);color:#00ff88;border-radius:8px;font-size:.68rem;padding:2px 8px;cursor:pointer;font-family:inherit}
+.nudge b{font-size:.68rem;color:#00ff88;min-width:44px;text-align:center;cursor:pointer}
+#lyrTime{color:#fff;background:rgba(0,255,136,.15);padding:2px 8px;border-radius:8px;min-width:52px;text-align:center}
+.lline{cursor:pointer;border-radius:6px;padding:0 4px}
+.lline:hover{background:rgba(0,255,136,.12)}
+.lhint{font-size:.66rem;opacity:.5;margin-bottom:4px}
+#lyrText{padding:10px 12px;font-family:'JetBrains Mono',monospace;font-size:.84rem;min-height:88px;line-height:2}
+.lline{color:#0e6b42}
+.lline.now{color:#00ff88}
+/* hire modal */
+#hireModal{position:fixed;inset:0;z-index:5000;background:rgba(0,0,0,.7);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:18px}
+#hireModal.open{display:flex}
+.hire-card{width:min(480px,100%);background:linear-gradient(160deg,#12122a,#0a0a18);border:1px solid rgba(0,255,204,.4);border-radius:24px;padding:28px;box-shadow:0 30px 80px rgba(0,0,0,.6);animation:cardIn .4s both;max-height:92vh;overflow:auto}
+.hire-card h3{font-family:'Syne',sans-serif;margin-bottom:4px}
+.hire-card p{opacity:.65;font-size:.88rem;margin-bottom:16px}
+.hire-card label{font-size:.8rem;opacity:.75;display:block;margin:10px 0 5px}
+.hire-card input,.hire-card select,.hire-card textarea{width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.18);color:#fff;border-radius:12px;padding:11px 13px;font-size:.92rem;font-family:inherit}
+.hire-card input:focus,.hire-card select:focus,.hire-card textarea:focus{outline:none;border-color:var(--neon)}
+.hire-card select option{background:#12122a}
+.hire-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.hire-send{display:flex;gap:10px;margin-top:18px}
+.hire-send button{flex:1;padding:13px;border-radius:100px;font-weight:800;cursor:pointer;border:none}
+#hireClose{background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.2)!important;margin-top:10px;width:100%;padding:11px;border-radius:100px;cursor:pointer}
+/* easter egg achievement */
+#achieve{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(140px);z-index:6000;background:linear-gradient(135deg,#1a1033,#3b0764);border:1px solid var(--neon);border-radius:18px;padding:14px 44px 14px 24px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.6),0 0 30px rgba(0,255,204,.3);transition:transform .45s cubic-bezier(.2,.9,.3,1.25);max-width:min(430px,92%);touch-action:pan-y}
+#achieve.show{transform:translateX(-50%) translateY(0)}
+#achClose{position:absolute;top:6px;right:10px;width:30px;height:30px;border-radius:50%;border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.08);color:#fff;font-size:1rem;cursor:pointer;line-height:1}
+@media(max-width:640px){#achieve{bottom:calc(76px + env(safe-area-inset-bottom));padding:12px 44px 12px 16px;font-size:.9rem}}
+/* mobile overlay optimization */
+@media(max-width:640px){
+nav{z-index:300}
+#player{z-index:400;top:64px}
+#themePanel{z-index:400}
+.dock{z-index:250}
+#hireModal{z-index:5000;padding:12px}
+.hire-card{max-height:88vh;max-height:88dvh;overflow-y:auto}
+#achieve{z-index:6000}
+.mtoast{position:fixed;top:64px;left:50%;transform:translateX(-50%) translateY(-16px);z-index:6000;background:rgba(10,10,22,.92);border:1px solid rgba(0,255,204,.4);color:#fff;border-radius:100px;padding:8px 16px;font-size:.78rem;opacity:0;pointer-events:none;transition:.3s;max-width:92%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mtoast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.xbtn{position:absolute;top:8px;right:10px;width:30px;height:30px;border-radius:50%;border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.08);color:#fff;font-size:1rem;cursor:pointer;line-height:1;z-index:5}
+#player{position:fixed}
+#themePanel{position:fixed}
+}
+.ach-t{font-family:'Syne',sans-serif;color:var(--neon);letter-spacing:2px;font-size:.8rem}
+.ach-n{font-size:1.3rem;font-weight:800;margin:4px 0}
+.ach-p{font-size:.78rem;opacity:.75;font-family:'JetBrains Mono',monospace}
+.ach-bar{height:8px;background:rgba(255,255,255,.12);border-radius:10px;margin-top:10px;overflow:hidden}
+.ach-bar span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--neon),var(--pink));border-radius:10px;transition:width .6s ease}
+/* themes */
+body[data-theme="sunset"]{--bg:#180d1c;--neon:#ffb03c;--violet:#ff5e62;--pink:#ff2fb3}
+body[data-theme="ocean"]{--bg:#041522;--neon:#3ae2ff;--violet:#2563eb;--pink:#f472b6}
+body[data-theme="forest"]{--bg:#06130c;--neon:#a3ff5e;--violet:#10b981;--pink:#fbbf24}
+body[data-theme="day"]{--bg:#edf1f8;--neon:#00755f;--violet:#6d28d9;--pink:#c0266b;color:#0d1526}
+body[data-theme="day"] nav{background:rgba(255,255,255,.78)}
+body[data-theme="day"] .marquee{background:rgba(255,255,255,.6)}
+body[data-theme="day"] .blob{opacity:.28}
+body[data-theme="day"] .card,body[data-theme="day"] .stat,body[data-theme="day"] .t-item,body[data-theme="day"] .proj,body[data-theme="day"] .check,body[data-theme="day"] .game-box,body[data-theme="day"] .ai-box{background:#fff;border-color:rgba(13,21,38,.12);box-shadow:0 12px 30px rgba(13,21,38,.08)}
+body[data-theme="day"] .grad{background:linear-gradient(90deg,#00755f,#6d28d9,#c0266b,#b45309);-webkit-background-clip:text;background-clip:text}
+body[data-theme="day"] .contact-box{background:linear-gradient(135deg,#1e1b4b,#831843,#083344);color:#fff}
+body[data-theme="day"] .contact-box a.big{color:#5eead4}
+body[data-theme="day"] .hud-pill{background:rgba(0,0,0,.65);color:#fff}
+body[data-theme="day"] .ai-row input,body[data-theme="day"] .chip{background:#fff;color:#0d1526;border-color:rgba(13,21,38,.25)}
+body[data-theme="day"] .hire-card{background:linear-gradient(160deg,#141433,#0a0a18);color:#fff}
+body[data-theme="day"] #player{color:#fff}
+body[data-theme="day"] .dock a{background:rgba(255,255,255,.9);color:#0d1526}
+body[data-theme="day"] .hack-box{color:#eafff3}
+#themePanel{position:fixed;right:16px;bottom:290px;z-index:200;width:210px;background:rgba(10,10,22,.9);backdrop-filter:blur(18px);border:1px solid rgba(0,255,204,.35);border-radius:18px;padding:14px 16px;color:#fff;opacity:0;pointer-events:none;transition:.3s;transform:translateY(8px)}
+#themePanel.open{opacity:1;pointer-events:auto;transform:none}
+.tmodes{display:grid;gap:8px;margin-top:10px}
+.tmode{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);color:#fff;border-radius:12px;padding:9px;cursor:pointer;font-weight:700;font-size:.85rem}
+.tmode.active{outline:2px solid var(--neon);outline-offset:1px}
+footer{text-align:center;opacity:.5;padding:30px;font-size:.85rem;position:relative;z-index:1}
+@media(max-width:1150px){.nav-links{display:none}}
+@media(max-width:640px){.theme-dots{gap:4px}.tdot{width:18px;height:18px}#musicTxt{display:none}nav{padding:10px 14px}}
+@media(max-width:640px){
+.check-grid{grid-template-columns:1fr}
+.hire-row{grid-template-columns:1fr}
+.hskill{grid-template-columns:96px 1fr 40px;font-size:.78rem}
+.ai-row{flex-direction:column}
+.ai-row .btn{width:100%}
+.stage{height:340px}
+.hero{padding:112px 0 30px}
+.hero h1{font-size:clamp(2.2rem,11vw,3rem)}
+.stat{min-width:calc(50% - 8px);flex:1}
+.t-body{font-size:.78rem;min-height:170px}
+.dock{right:10px;bottom:10px}
+.dock a{width:44px;height:44px;font-size:1.2rem}
+#themePanel{right:10px;bottom:236px;width:190px}
+#player{top:70px;width:min(420px,94%)}
+.hire-send{flex-direction:column}
+.contact-box{padding:22px}
+.proj-grid{grid-template-columns:1fr}
+.marquee span{font-size:1rem;margin:0 14px}
+}
+@media(prefers-reduced-motion:reduce){
+.blob,.marquee .track,.vinyl{animation:none!important}
+}
+@media(max-width:900px){.check-grid{grid-template-columns:1fr 1fr}.hero{grid-template-columns:1fr}.grid,.proj-grid,.contact-box{grid-template-columns:1fr}.nav-links{display:none}*{cursor:auto!important}.cursor,.cursor-dot{display:none}.stage{height:420px}}
+</style>
+</head>
+<body>
+<div id="loader"><h1>GAURAV.DEV</h1><div class="loadbar"><span></span></div><p style="opacity:.6;font-size:.9rem">loading 3D • BEATS...</p></div>
+<div class="cursor" id="cur"></div><div class="cursor-dot" id="curDot"></div>
+<canvas id="particles"></canvas>
+<div class="blob blob1"></div><div class="blob blob2"></div><div class="blob blob3"></div>
+
+<nav>
+<div class="logo">GAURAV<b>.DEV</b> <a href="#exp" class="exp-link"><img src="11.JPG" class="exp-img" alt="5 Years Experience"></a></div>
+<div class="nav-links"><a href="#services">Services</a><a href="#work">Work</a><a href="#hacker">Hacker</a><a href="#aichat">Matrix</a><a href="#game">Game</a><a href="#exp">Experience</a><a href="#contact">Contact</a></div>
+<button class="music-btn" id="musicBtn"><span class="eq"><i></i><i></i><i></i><i></i></span><span id="musicTxt">🎵 Music</span></button>
+<div class="theme-dots" title="Theme mode">
+<button class="tdot" data-t="night" title="Night" style="background:#07070f"></button>
+<button class="tdot" data-t="day" title="Day" style="background:#eef1f8"></button>
+<button class="tdot" data-t="sunset" title="Sunset" style="background:linear-gradient(135deg,#ff5e62,#ffb03c)"></button>
+<button class="tdot" data-t="ocean" title="Ocean" style="background:linear-gradient(135deg,#2563eb,#3ae2ff)"></button>
+<button class="tdot" data-t="forest" title="Forest" style="background:linear-gradient(135deg,#10b981,#a3ff5e)"></button>
+</div>
+</nav>
+
+<div id="player"><button class="xbtn" id="playerClose" aria-label="Close player">X</button>
+<div class="ptitle">🧚 Fairytale — Alexander Rybak <span id="volLbl">70%</span></div>
+<div class="prow">
+<button id="pPlay" title="Play">▶</button>
+<button id="pPause" title="Pause">⏸</button>
+<button id="pStop" title="Stop">⏹</button>
+<button id="vDown" title="Volume low">🔉</button>
+<button id="vUp" title="Volume high">🔊</button>
+</div>
+<div class="pbar"><span id="pfill"></span></div>
+<a id="pDl" class="dl-btn" href="fairytale.mp3" download="fairytale.mp3">⬇ Download Song</a>
+<div class="pstatus" id="pStatus">⏹ Stopped — press ▶ Play</div>
+<div class="lyr"><div class="lyr-head">♪ lyrics console <span class="nudge"><b id="lyrTime">0:00.0</b><button id="lyrMinus" title="lyrics early">−.25</button><b id="lyrOff">+0.00s</b><button id="lyrPlus" title="lyrics late">+.25</button></span></div><div id="lyrText"></div></div>
+</div>
+<audio id="fairyAudio" preload="auto" playsinline src="fairytale.mp3"></audio>
+
+<header class="hero">
+<div>
+<div class="badge"><span class="dot"></span> Available for freelance • India / Worldwide</div>
+<h1>GAURAV<br><span class="grad">MUDALIAR</span><br>BUILDS VIRAL WEB.</h1>
+<div class="type">> <span id="typing"></span><span style="animation:blink 1s infinite">|</span></div>
+<p class="sub">Full-Stack Developer with <b style="color:#00ffcc">5 Years Experience</b>. Shopify • WordPress • Custom Apps • Mobile Apps • AI Chatbots • Automation. 40+ live projects. Founder of <b>GAURAV DEVELOPMENT</b>.</p>
+<div class="btns">
+<a class="btn primary" href="#work">🔥 View Work</a>
+<a class="btn" href="https://github.com/gaurav39309-9" target="_blank">💻 GitHub</a>
+<button class="btn hire-btn" onclick="openHire()">✉️ Hire Me</button>
+</div>
+<div class="stats">
+<div class="stat"><h3><span class="count" data-n="5">0</span>+</h3><p>Years Exp.</p></div>
+<div class="stat"><h3><span class="count" data-n="40">0</span>+</h3><p>Projects Live</p></div>
+<div class="stat"><h3><span class="count" data-n="28">0</span>+</h3><p>Websites</p></div>
+<div class="stat"><h3><span class="count" data-n="8">0</span></h3><p>Play Store Apps</p></div>
+</div>
+</div>
+<div class="stage">
+<canvas id="hero3d"></canvas>
+<div class="stage-label"><div>🎧 3D BOY • LIVE RENDER • drag to vibe<br><span style="opacity:.6">Three.js + GSAP</span></div><div class="vinyl"></div></div>
+</div>
+</header>
+
+<div class="marquee"><div class="track" id="marTrack"><span>⚡ SHOPIFY</span><span>✦ WORDPRESS</span><span>⚡ AI CHATBOTS</span><span>✦ MOBILE APPS</span><span>⚡ RAG SYSTEMS</span><span>✦ DISCORD BOTS</span><span>⚡ MINECRAFT</span><span>✦ SEO / GROWTH</span><span>⚡ PREMIUM DESIGN</span></div></div>
+
+<section class="block" id="services">
+<h2 class="sec-title">Services that <span class="grad">TREND 🔥</span></h2>
+<p class="sec-sub">Everything latest — AI, 3D, music-sync UI, high-converting stores.</p>
+<div class="grid">
+<div class="card"><div class="icon">💻</div><h3>Development</h3><p>Business sites, E-commerce, Mobile Apps, PC Software, Custom Tools, API & Backend.</p></div>
+<div class="card"><div class="icon">🤖</div><h3>AI Development</h3><ul><li>AI Chatbots, Agents, Assistants</li><li>OpenAI / Gemini / Claude</li><li>RAG, PDF AI, Voice AI, Vision AI</li><li>AI Automation & Workflows</li></ul></div>
+<div class="card"><div class="icon">🛍️</div><h3>Shopify E-commerce</h3><p>11 live stores. High-speed, CRO optimized, pixel + analytics setup.</p></div>
+<div class="card"><div class="icon">🎮</div><h3>Gaming & Community</h3><p>Minecraft Plugins, AI Minecraft Systems, Discord Bots + AI Discord Assistants.</p></div>
+<div class="card"><div class="icon">🎨</div><h3>Premium Web Design</h3><p>UI/UX, Branding, Three.js 3D hero, smooth animations, music-ready visuals.</p></div>
+<div class="card"><div class="icon">📈</div><h3>Growth + Security</h3><p>SEO, Marketing, Analytics + Security, Testing, Bug Fixing, Maintenance, Hosting.</p></div>
+</div>
+</section>
+
+<section class="block" id="work">
+<h2 class="sec-title">Selected <span class="grad">WORK</span> — 40+ Live</h2>
+<p class="sec-sub">Filter karke dekh — sab live links.</p>
+<div class="filters">
+<button class="fbtn active" data-f="all">All</button>
+<button class="fbtn" data-f="shop">Shopify</button>
+<button class="fbtn" data-f="wp">WordPress</button>
+<button class="fbtn" data-f="custom">Custom</button>
+<button class="fbtn" data-f="app">Apps</button>
+<button class="fbtn" data-f="ai">AI</button>
+</div>
+<div class="proj-grid" id="projGrid"></div>
+</section>
+
+<section class="block" id="checklist">
+<h2 class="sec-title">Every Website <span class="grad">Includes</span> ✅</h2>
+<p class="sec-sub">Har project me ye standard setup free — koi shortcut nahi.</p>
+<div class="check-grid">
+<div class="check"><b>✓</b>Cookie Consent</div>
+<div class="check"><b>✓</b>Privacy Policy</div>
+<div class="check"><b>✓</b>Terms & Conditions</div>
+<div class="check"><b>✓</b>Custom 404 / 502 Pages</div>
+<div class="check"><b>✓</b>CMS Dashboard</div>
+<div class="check"><b>✓</b>Sitemaps + XML Sitemap</div>
+<div class="check"><b>✓</b>Contact Page</div>
+<div class="check"><b>✓</b>CTA Sections</div>
+<div class="check"><b>✓</b>SEO Build</div>
+<div class="check"><b>✓</b>Meta Tags + Open Graph</div>
+<div class="check"><b>✓</b>Image Alt Text</div>
+<div class="check"><b>✓</b>Readability + Navigation</div>
+<div class="check"><b>✓</b>Responsive (Mobile/PC/Tablet)</div>
+<div class="check"><b>✓</b>Copywriting Support</div>
+<div class="check"><b>✓</b>Optimized Images (fast load)</div>
+<div class="check"><b>✓</b>Forms + Links Testing</div>
+<div class="check"><b>✓</b>Favicon</div>
+<div class="check"><b>✓</b>Accessibility</div>
+<div class="check"><b>✓</b>Page Speed Tuning</div>
+<div class="check"><b>✓</b>Permanent Redirects</div>
+<div class="check"><b>✓</b>Strong Credentials</div>
+<div class="check"><b>✓</b>Contact + CTA Wiring</div>
+</div>
+</section>
+
+<section class="block" id="hacker">
+<h2 class="sec-title"><span id="hackTitle">HACKER MODE</span> <span class="grad">💻</span></h2>
+<p class="sec-sub">Coding vibes — live terminal + matrix rain, sab pure JS me.</p>
+<div class="hack-box">
+<canvas id="matrix"></canvas>
+<div class="terminal">
+<div class="t-head"><i></i><i></i><i></i><span>gaurav@dev: ~/portfolio</span></div>
+<div class="t-body"><span id="termText"></span><span class="tcur">▊</span></div>
+</div>
+<div class="hskills">
+<div class="hskill"><span>HTML / CSS / JS</span><div class="hbar"><i data-w="95"></i></div><b>95%</b></div>
+<div class="hskill"><span>Shopify</span><div class="hbar"><i data-w="90"></i></div><b>90%</b></div>
+<div class="hskill"><span>WordPress</span><div class="hbar"><i data-w="88"></i></div><b>88%</b></div>
+<div class="hskill"><span>AI / Chatbots</span><div class="hbar"><i data-w="85"></i></div><b>85%</b></div>
+<div class="hskill"><span>Mobile Apps</span><div class="hbar"><i data-w="80"></i></div><b>80%</b></div>
+</div>
+</div>
+</section>
+
+<section class="block" id="aichat">
+<h2 class="sec-title"><span class="grad">MATRIX</span> 🤖</h2>
+<p class="sec-sub">ChatGPT jaisa AI assistant — chat, code, writing, ideas + image generation. No login, sirf internet chahiye (public AI, kabhi slow ho sakta hai).</p>
+<div class="ai-box">
+<div class="ai-modes"><button class="fbtn active" id="mChat">💬 Chat</button><button class="fbtn" id="mImg">🎨 Image</button><span class="ai-hint" id="aiHint">Ask anything!</span></div>
+<div class="ai-msgs" id="aiMsgs"><div class="msg bot">Hey! ⚡ Mai hu <b>MATRIX</b> — ChatGPT jaisa assistant. Code, writing, ideas, sawal — <b>kuch bhi</b> pucho! <b>Image</b> mode me tasveer bhi banata hu! 🎨</div></div>
+<div class="chips"><button class="chip">Write Python code for snake game</button><button class="chip">Business ideas for beginners</button><button class="chip">Generate: cyberpunk city at night</button></div>
+<div class="ai-row"><input id="aiIn" placeholder="Type here... (Enter = send)"><button class="btn" id="aiSend">Send ➤</button></div>
+</div>
+</section>
+
+<section class="block" id="game">
+<h2 class="sec-title">Mini <span class="grad">GAME</span> 🎮 — Bug Fixer</h2>
+<p class="sec-sub">30 sec me jitne 🐞 bugs fix kar sakta hai kar! Click / tap to fix. High-score save hota hai.</p>
+<div class="game-box">
+<div class="game-hud">
+<div class="hud-pill">⭐ Score: <b id="gScore" style="color:#00ffcc">0</b></div>
+<div class="hud-pill">⏱ Time: <b id="gTime" style="color:#ff2fb3">30</b>s</div>
+<div class="hud-pill">🏆 Best: <b id="gBest">0</b></div>
+<button class="btn" id="gStart" style="padding:10px 22px">▶ Start Game</button>
+</div>
+<canvas id="gameCanvas" width="1000" height="380"></canvas>
+<p style="opacity:.6;font-size:.85rem;margin-top:10px">Tip: 🐞 par click = +10, 💣 bomb par click = -20. Mobile par tap kar!</p>
+</div>
+<div class="game-box" style="margin-top:18px">
+<div class="game-hud">
+<div class="hud-pill">🐍 Score: <b id="sScore" style="color:#00ffcc">0</b></div>
+<div class="hud-pill">🏆 Best: <b id="sBest">0</b></div>
+<button class="btn" id="sStart" style="padding:10px 22px">▶ Start Snake</button>
+</div>
+<canvas id="snakeCanvas" width="400" height="400" style="width:100%;max-width:440px;margin:0 auto;display:block;background:#050510;border-radius:18px;border:1px solid rgba(255,255,255,.12);touch-action:none"></canvas>
+<div class="dpad"><button data-d="up">▲</button><button data-d="left">◀</button><button data-d="down">▼</button><button data-d="right">▶</button></div>
+<p style="opacity:.6;font-size:.85rem;margin-top:10px">PC: Arrow / WASD • Mobile: swipe ya buttons. Python wala snake ab website me! 🐍</p>
+</div>
+</section>
+
+<section class="block" id="exp">
+<h2 class="sec-title">5 Years <span class="grad">EXPERIENCE</span></h2>
+<p class="sec-sub">2020 → 2025 journey</p>
+<div class="timeline">
+<div class="t-item"><h3>2020-2021 • Started Freelancing</h3><p>WordPress + Shopify stores, learned PHP, JS, SEO. First 10 clients.</p></div>
+<div class="t-item"><h3>2022-2023 • Full-Stack + Apps</h3><p>Custom MERN / APIs, 8 Play Store apps (ShoppersStop, Westside, Sivvi, CollegeMitra...), server/deployment mastery.</p></div>
+<div class="t-item"><h3>2024-2025 • AI + Agency Owner</h3><p>GAURAV DEVELOPMENT. AI chatbots, RAG, Discord AI, automation, 3D websites. 40+ projects across IN, UK, USA, ZA, CA.</p></div>
+</div>
+</section>
+
+<section class="block" id="contact">
+<h2 class="sec-title">Let's <span class="grad">WORK TOGETHER</span> 🚀</h2>
+<div class="contact-box">
+<div><h3 style="margin-bottom:12px">Gaurav Mudaliar</h3><p style="opacity:.7;margin-bottom:14px">Full-Stack Developer • 5 Yrs • GAURAV DEVELOPMENT<br>India | Working Worldwide</p><p>📧 <a class="big" href="mailto:gauravmudaliar@gmail.com">gauravmudaliar@gmail.com</a></p><p style="margin-top:8px">📞 <a class="big" href="tel:9032732806">9032732806</a></p><p style="margin-top:8px">💻 <a class="big" href="https://github.com/gaurav39309-9" target="_blank" rel="noopener">github.com/gaurav39309-9</a></p>
+<div class="action-row">
+<a class="btn" href="tel:9032732806">📞 Call Now</a>
+<a class="btn" href="https://wa.me/919032732806?text=Hi%20Gaurav!%20Mujhe%20website%20banwani%20hai." target="_blank" rel="noopener">💬 WhatsApp</a>
+<a class="btn" href="mailto:gauravmudaliar@gmail.com?subject=Hire%20Gaurav%20-%20Project">✉️ Email</a>
+<a class="btn" href="https://github.com/gaurav39309-9" target="_blank" rel="noopener">💻 GitHub</a>
+</div></div>
+<div style="display:flex;flex-direction:column;gap:12px;justify-content:center"><button class="btn hire-btn" style="text-align:center" onclick="openHire()">Hire Me Now</button><button class="btn" onclick="alert('Download CV soon! Gaurav_Profile.txt already ready on Desktop')">⬇ Download Profile</button><p style="font-size:.8rem;opacity:.6">Available for Freelance, Contract & Full-Time • Fast delivery • Clean code</p></div>
+</div>
+</section>
+
+<div class="mtoast" id="mtoast"></div><div id="achieve"><button id="achClose" aria-label="Dismiss">✕</button><div class="ach-t">🏆 ACHIEVEMENT UNLOCKED!</div><div class="ach-n" id="achName"></div><div class="ach-p" id="achProg"></div><div class="ach-bar"><span id="achFill"></span></div></div>
+<footer>© 2025 Gaurav Mudaliar • Made with Three.js + GSAP + Beats • 5 Years of Shipping 🔥</footer>
+<div id="hireModal">
+<div class="hire-card">
+<h3>Hire <span class="grad">Gaurav</span> 🚀</h3>
+<p>Details bharo — seedha WhatsApp ya Email par bhejo.</p>
+<div class="hire-row">
+<div><label>Your Name *</label><input id="hName" placeholder="e.g. Rahul Sharma"></div>
+<div><label>Phone / Email *</label><input id="hContact" placeholder="e.g. 98765..."></div>
+</div>
+<label>Service chahiye?</label>
+<select id="hService"><option>Shopify Store</option><option>WordPress Website</option><option>Custom Web App</option><option>Mobile App</option><option>AI Chatbot / AI Work</option><option>Website Design + Motion</option><option>Other</option></select>
+<label>Budget (optional)</label>
+<input id="hBudget" placeholder="e.g. ₹15,000">
+<label>Project details *</label>
+<textarea id="hMsg" rows="3" placeholder="Mujhe kya banwana hai..."></textarea>
+<div class="hire-send">
+<button style="background:linear-gradient(90deg,var(--violet),var(--pink));color:#fff" onclick="sendHire('wa')">💬 WhatsApp</button>
+<button style="background:linear-gradient(90deg,var(--violet),var(--pink));color:#fff" onclick="sendHire('mail')">✉️ Email</button>
+</div>
+<button id="hireClose" onclick="closeHire()">Close</button>
+</div>
+</div>
+<div class="dock">
+<a id="themeBtn" title="Theme mode">🎨</a>
+<a href="#aichat" title="Matrix AI">🤖</a>
+<a href="tel:9032732806" title="Call Now">📞</a>
+<a href="https://wa.me/919032732806?text=Hi%20Gaurav!%20Mujhe%20website%20banwani%20hai." target="_blank" rel="noopener" title="WhatsApp">💬</a>
+<a href="mailto:gauravmudaliar@gmail.com" title="Email">✉️</a>
+<a href="https://github.com/gaurav39309-9" target="_blank" rel="noopener" title="GitHub">💻</a>
+</div>
+<div id="themePanel"><button class="xbtn" id="themeClose" aria-label="Close themes">X</button><div class="ptitle">🎨 Theme Mode</div><div class="tmodes"><button class="tmode" data-t="night">🌙 Night</button><button class="tmode" data-t="day">☀️ Day</button><button class="tmode" data-t="sunset">🌆 Sunset</button><button class="tmode" data-t="ocean">🌊 Ocean</button><button class="tmode" data-t="forest">🌲 Forest</button></div></div>
+
+<script>
+// loader
+window.addEventListener('load',()=>{setTimeout(()=>{document.getElementById('loader').style.opacity=0;setTimeout(()=>document.getElementById('loader').remove(),650)},1900)});
+// cursor
+const cur=document.getElementById('cur'),dot=document.getElementById('curDot');
+document.addEventListener('mousemove',e=>{cur.style.left=e.clientX+'px';cur.style.top=e.clientY+'px';dot.style.left=e.clientX+'px';dot.style.top=e.clientY+'px'});
+document.addEventListener('mouseover',e=>{try{cur.classList.toggle('big',!!e.target.closest('a,button,input,select,textarea,canvas'))}catch(_){}});
+// particles 2D
+const pc=document.getElementById('particles'),ctx=pc.getContext('2d');let W,H,ps=[];
+function resize(){W=pc.width=innerWidth;H=pc.height=innerHeight}resize();addEventListener('resize',resize);
+for(let i=0;i<(innerWidth<640?40:90);i++)ps.push({x:Math.random()*innerWidth,y:Math.random()*innerHeight,r:Math.random()*2.5+.5,s:Math.random()*.7+.2,o:Math.random()*.7+.2,c:Math.random()>.5?'#00ffcc':'#ff2fb3'});
+(function loop(){requestAnimationFrame(loop);if(document.hidden)return;ctx.clearRect(0,0,W,H);ps.forEach(p=>{p.y-=p.s;if(p.y<0)p.y=H;ctx.globalAlpha=p.o;ctx.fillStyle=p.c;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,7);ctx.fill()})})();
+// typing
+const roles=['Shopify E-commerce...','WordPress Pro...','Custom MERN Apps...','AI Chatbots & Agents...','Mobile Apps...','Premium Websites...'];let ri=0,ci=0,del=false;const te=document.getElementById('typing');
+(function type(){const w=roles[ri];te.textContent=w.slice(0,ci);if(!del){ci++;if(ci>w.length){del=true;setTimeout(type,900);return}}else{ci--;if(ci===0){del=false;ri=(ri+1)%roles.length}}setTimeout(type,del?35:70)})();
+// counters
+gsap.registerPlugin(ScrollTrigger);
+document.querySelectorAll('.count').forEach(el=>{const n=+el.dataset.n;ScrollTrigger.create({trigger:el,start:'top 90%',once:true,onEnter:()=>{gsap.fromTo(el,{innerText:0},{innerText:n,duration:1.6,snap:{innerText:1}})}})});
+// reveal
+gsap.utils.toArray('.card,.proj,.t-item').forEach(el=>{gsap.from(el,{y:40,opacity:0,duration:.7,ease:'power3.out',scrollTrigger:{trigger:el,start:'top 92%'}})});
+// projects data
+const data=[
+...['zyloft.shop','dimensionsverse.com','clapton.in','ceramicshewrote.in','ayurmedixindia.com','illuminatejewellery.in','maatrbandhu.com','driro.shop','streetbits.in','wanderwits.com','satvdairy.in'].map(u=>({c:'shop',t:'shopify',u})),
+...['atozengineeringfoodcart.com','photographytours.co.za','thebestdancingstar.com','zahori.in','movewithanu.com','omjee.in','sandon-dental.co.uk','vedantlightupcandle.com','onceuponatattoo.ca'].map(u=>({c:'wp',t:'wordpress',u})),
+...['healthlinepharmaceuticals.com','grihpbiotech.com','vinodcookware.com','madarax.vercel.app','fishcord.netlify.app','bholenathcaterer.com','jwobot.site','ekpravasthejourney.in','courageous-capybara-60c332.netlify.app'].map(u=>({c:'custom',t:'custom',u})),
+...['shoppersstop.shoppersstop','com.westside','com.sivvi.app','com.itza.maxpro','com.aaditya.collegemitra','com.urbanauracs.urbenauraservices','com.miles.one','io.MBapp.tekshap'].map(u=>({c:'app',t:'play store app',u:'play.google.com/store/apps/details?id='+u})),
+...['AI Support Bot','AI Discord Assistant','AI Website Chatbot','AI Automation','AI Doc Analyzer','AI Knowledge Base'].map(u=>({c:'ai',t:'ai system',u}))
+];
+const grid=document.getElementById('projGrid');
+function render(f){grid.innerHTML='';data.filter(d=>f==='all'||d.c===f).forEach((d,i)=>{const div=document.createElement('div');div.className='proj '+d.c;div.style.animationDelay=Math.min(i*45,900)+'ms';div.innerHTML=`<small>${d.t}</small><h4 style="margin-bottom:8px">${d.u.length>32?d.u.slice(0,32)+'…':d.u}</h4><a class="link" href="${d.u.startsWith('http')||d.u.includes('play.google')?'https://'+d.u.replace(/^https:\/\//,''):'https://'+d.u}" target="_blank">↗ ${d.u}</a>`;grid.appendChild(div)})}
+render('all');
+document.querySelectorAll('.fbtn').forEach(b=>b.onclick=()=>{document.querySelectorAll('.fbtn').forEach(x=>x.classList.remove('active'));b.classList.add('active');render(b.dataset.f)});
+// FAIRY TALE MUSIC PLAYER - real MP3 file, no internet needed
+let mPlaying=false,mVol=.7;
+function musicUI(){document.getElementById('volLbl').textContent=Math.round(mVol*100)+'%';document.getElementById('pfill').style.width=(mVol*100)+'%';
+const on=mPlaying;document.body.classList.toggle('playing-all',on);document.querySelector('.music-btn').classList.toggle('playing',on)}
+function setStatus(t){document.getElementById('pStatus').textContent=t}
+function musicPlay(){try{const FA=document.getElementById('fairyAudio');const p=FA.play();const go=()=>{mPlaying=true;musicUI();setStatus('▶ Playing... fairy tale 🧚');startLyrRAF();unlockEgg('listener')};if(p&&p.then)p.then(go).catch(e=>setStatus('❌ Play error — file saath me rakho: '+e.message));else go()}catch(e){setStatus('❌ Sound error: '+e.message)}}
+function musicPause(){try{document.getElementById('fairyAudio').pause()}catch(e){}mPlaying=false;cancelAnimationFrame(rafId);musicUI();setStatus('⏸ Paused — press ▶ to continue')}
+function musicStop(){try{const FA=document.getElementById('fairyAudio');FA.pause();FA.currentTime=0}catch(e){}mPlaying=false;cancelAnimationFrame(rafId);lyrIdx=-1;renderLyr();musicUI();setStatus('⏹ Stopped — press ▶ Play')}
+function volCh(d){mVol=Math.min(1,Math.max(0,+(mVol+d).toFixed(2)));try{document.getElementById('fairyAudio').volume=mVol}catch(e){}musicUI()}
+document.getElementById('musicBtn').onclick=()=>{const p=document.getElementById('player');p.classList.toggle('open');if(p.classList.contains('open')&&!mPlaying)musicPlay()};
+document.getElementById('pPlay').onclick=musicPlay;
+document.getElementById('pPause').onclick=musicPause;
+document.getElementById('pStop').onclick=musicStop;
+document.getElementById('vUp').onclick=()=>volCh(.15);
+document.getElementById('vDown').onclick=()=>volCh(-.15);
+// LYRICS CONSOLE - synced with fairytale.mp3 (184s)
+let lyrIdx=-1,LYR_OFF=0,rafId=null;
+const LYRICS=[{t:1.5,x:'🎻 Fairytale — Alexander Rybak'},{t:13.5,x:'Years ago, when I was younger'},{t:19.5,x:'I kinda liked a girl I knew'},{t:25.5,x:'She was mine, we were sweethearts'},{t:31,x:'That was then, but then it is true'},{t:40,x:'🔥 I am in love with a fairytale'},{t:45,x:'Even though it hurts'},{t:50,x:"'Cause I do not care if I lose my mind"},{t:55,x:'I am already cursed'},{t:66,x:'🎻 verse two...'},{t:95,x:'🔥 I am in love with a fairytale'},{t:100,x:'Even though it hurts'},{t:148,x:'🔥 I am in love with a fairytale'},{t:158,x:'I am already cursed'},{t:172,x:'🎻 outro — thanks for listening'}];
+function nudge(d){LYR_OFF=+(LYR_OFF+d).toFixed(2);document.getElementById('lyrOff').textContent=(LYR_OFF>=0?'+':'')+LYR_OFF.toFixed(2)+'s';saveOff()}
+function saveOff(){try{localStorage.setItem('gaurav_lyr_off',LYR_OFF)}catch(e){}}
+function fmtT(s){s=Math.max(0,s);const m=Math.floor(s/60),ss=(s%60).toFixed(1);return m+':'+(ss<10?'0':'')+ss}
+function tickTime(t){const el=document.getElementById('lyrTime');if(!el)return;const s=fmtT(t);if(el.textContent!==s)el.textContent=s}
+function startLyrRAF(){cancelAnimationFrame(rafId);const FA=document.getElementById('fairyAudio');const loop=()=>{if(!mPlaying)return;tickTime(FA.currentTime);const t=FA.currentTime+LYR_OFF;let ix=-1;for(let i=0;i<LYRICS.length;i++)if(t>=LYRICS[i].t)ix=i;if(ix!==lyrIdx){lyrIdx=ix;renderLyr()}rafId=requestAnimationFrame(loop)};loop()}
+function renderLyr(){const box=document.getElementById('lyrText');if(!box)return;if(lyrIdx<0){box.innerHTML='<div class="lline">♪ ready... press ▶</div>';return}let h='<div class="lhint">👆 jo line baj rahi hai, uspar tap karo = auto-sync</div>';for(let i=Math.max(0,lyrIdx-2);i<=lyrIdx;i++)h+=i===lyrIdx?'<div class="lline now" data-i="'+i+'">&gt; '+LYRICS[i].x+'</div>':'<div class="lline" data-i="'+i+'">'+LYRICS[i].x+'</div>';box.innerHTML=h}
+(function(){const FA=document.getElementById('fairyAudio');if(!FA)return;FA.volume=mVol;
+FA.addEventListener('timeupdate',()=>{if(!mPlaying)return;const t=FA.currentTime+LYR_OFF;let ix=-1;for(let i=0;i<LYRICS.length;i++)if(t>=LYRICS[i].t)ix=i;if(ix!==lyrIdx){lyrIdx=ix;renderLyr()}});
+FA.addEventListener('ended',()=>{mPlaying=false;cancelAnimationFrame(rafId);unlockEgg('marathon');lyrIdx=-1;renderLyr();musicUI();setStatus('✅ Song finished — press ▶ again')});
+FA.addEventListener('error',()=>setStatus('❌ Song file nahi mili — fairytale.mp3 HTML ke saath rakho'));
+document.getElementById('lyrMinus').onclick=()=>nudge(-.25);
+document.getElementById('lyrPlus').onclick=()=>nudge(.25);
+document.getElementById('lyrOff').onclick=()=>{LYR_OFF=0;document.getElementById('lyrOff').textContent='+0.00s';saveOff();setStatus('↺ Sync reset');lyrIdx=-1};
+document.getElementById('lyrText').addEventListener('click',e=>{const l=e.target.closest('.lline');if(!l||l.dataset.i===undefined)return;const FA=document.getElementById('fairyAudio');const i=+l.dataset.i;let off=+((FA.currentTime||0)-LYRICS[i].t).toFixed(2);off=Math.max(-20,Math.min(20,off));LYR_OFF=off;document.getElementById('lyrOff').textContent=(off>=0?'+':'')+off.toFixed(2)+'s';saveOff();unlockEgg('syncstar');setStatus('🎯 Auto-synced! poora song lock 🔒');lyrIdx=-1});
+try{const sv=localStorage.getItem('gaurav_lyr_off');if(sv!==null&&sv!==''){LYR_OFF=+sv;document.getElementById('lyrOff').textContent=(LYR_OFF>=0?'+':'')+LYR_OFF.toFixed(2)+'s'}}catch(e){}
+renderLyr()})();
+musicUI();
+// marquee duplicate
+const mt=document.getElementById('marTrack');mt.innerHTML+=mt.innerHTML;
+
+// HIRE FORM -> WhatsApp + Email direct
+function openHire(){window._dr=(window._dr||0)+1;if(window._dr>=3)unlockEgg('dreamer');document.getElementById('hireModal').classList.add('open')}
+function closeHire(){document.getElementById('hireModal').classList.remove('open')}
+document.getElementById('hireModal').addEventListener('click',e=>{if(e.target.id==='hireModal')closeHire()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeHire()});
+function sendHire(where){
+  const n=document.getElementById('hName').value.trim(),
+        c=document.getElementById('hContact').value.trim(),
+        s=document.getElementById('hService').value,
+        b=document.getElementById('hBudget').value.trim(),
+        m=document.getElementById('hMsg').value.trim();
+  if(!n||!c||!m){alert('Please fill Name, Contact aur Project details!');return}
+  const text=`Hi Gaurav! I want to hire you.%0A%0AName: ${encodeURIComponent(n)}%0AContact: ${encodeURIComponent(c)}%0AService: ${encodeURIComponent(s)}%0ABudget: ${encodeURIComponent(b||'Not mentioned')}%0ADetails: ${encodeURIComponent(m)}`;
+  const plain=`Hi Gaurav! I want to hire you.\n\nName: ${n}\nContact: ${c}\nService: ${s}\nBudget: ${b||'Not mentioned'}\nDetails: ${m}`;
+  if(where==='wa'){window.open('https://wa.me/919032732806?text='+text,'_blank')}
+  else{window.location.href='mailto:gauravmudaliar@gmail.com?subject='+encodeURIComponent('New Project - '+n+' - '+s)+'&body='+encodeURIComponent(plain)}
+  unlockEgg('client');
+}
+
+// EASTER EGGS 🥚 + achievement announcements
+const EGGS={konami:['Konami Master','secret code! 🎮'],logo:['Logo Lover','logo 25x! 👀'],dj:['DJ Gaurav','vinyl 20x! 🎧'],footer:['Footer Fan','footer 25x! 👇'],melody:['Melody Maker','music 5x! 🎵'],stylist:['Stylist','theme panel 5x! 🎨'],dreamer:['Dreamer','hire form 3x! 🚀'],certified:['Certified','badge 15x! ⭐'],collector:['Collector','song 3x download! ⬇'],talkative:['Chatterbox','5 Matrix chats! 💬'],artist:['AI Artist','3 images! 🎨'],k_matrix:['Matrix Within','typed matrix! 🟢'],k_gaurav:['Name Dropper','typed gaurav! ✍'],k_egg:['Egg Finder','typed egg! 🥚'],k_dev:['Dev Mode','typed dev! 💻'],k_snake:['Sssneaky','typed snake! 🐍'],k_win:['Winner','typed win! 🏆'],k_lol:['Laugh Out Loud','typed lol! 😂'],bug50:['Debugger','50+ Bug Fixer! 🔧'],bug:['Bug Slayer','100+ Bug Fixer! 🐞'],bug200:['Exterminator','200+ Bug Fixer! 💥'],snake30:['Worm','30+ Snake! 🪱'],snake:['Snake Charmer','50+ Snake! 🐍'],snake100:['Python','150+ Snake! 🐍'],th_night:['Dark Knight','night theme! 🌙'],th_day:['Sunshine','day theme! ☀️'],th_sunset:['Sunset Chaser','sunset theme! 🌆'],th_ocean:['Deep Diver','ocean theme! 🌊'],th_forest:['Forest Ranger','forest theme! 🌲'],themes:['Fashionista','all 5 themes! 🎨'],sec_services:['Tourist','services seen! 🧭'],sec_work:['Critic','work seen! 👀'],sec_hacker:['Hacker Fan','hacker seen! 💻'],sec_aichat:['AI Fan','Matrix seen! 🤖'],sec_checklist:['Inspector','checklist seen! ✅'],sec_game:['Player','games seen! 🎮'],sec_exp:['Historian','story seen! 📜'],sec_contact:['Connector','contact seen! 📞'],listener:['Listener','song played! 🎵'],marathon:['Marathon','full song! 🏁'],syncstar:['Sync Star','lyrics synced! 🎯'],gamer:['Gamer','both games! 🎮'],client:['First Client','details sent! 📩'],clicker:['Click Machine','300 clicks! 🖱'],scroller:['Floor Finder','bottom 3x! 🕳'],owl:['Night Owl','late night visit! 🦉'],earlybird:['Early Bird','morning visit! 🐦'],returning:['Welcome Back','visited again! 👋'],hunter10:['Egg Hunter','10 eggs! 🔍'],master25:['Egg Master','25 eggs! 🏅'],legend50:['Egg Legend','50 eggs! 👑']};
+function eggKey(){return 'gaurav_eggs'}
+function loadEggs(){try{eggFound=JSON.parse(localStorage.getItem(eggKey())||'[]')}catch(e){eggFound=[]}}
+let eggFound=[];loadEggs();
+function checkMs(){const n=eggFound.length;if(n>=10)unlockEgg('hunter10');if(n>=25)unlockEgg('master25');if(n>=50)unlockEgg('legend50')}
+function gameSeen(g){try{let a=JSON.parse(sessionStorage.getItem('gaurav_games')||'[]');if(a.indexOf(g)<0)a.push(g);sessionStorage.setItem('gaurav_games',JSON.stringify(a));if(a.length>=2)unlockEgg('gamer')}catch(e){}}
+let achT=null,achQueue=[],achShowing=false;
+function eggBeep(){try{const C=window.AudioContext||window.webkitAudioContext;const a=new C();if(a.state==='suspended')a.resume();const o=a.createOscillator(),g=a.createGain();o.type='triangle';o.frequency.setValueAtTime(660,a.currentTime);o.frequency.setValueAtTime(990,a.currentTime+.12);g.gain.setValueAtTime(.25,a.currentTime);g.gain.exponentialRampToValueAtTime(.001,a.currentTime+.45);o.connect(g);g.connect(a.destination);o.start();o.stop(a.currentTime+.5)}catch(e){}}
+function showNextAch(){const t=document.getElementById('achieve');if(!achQueue.length){achShowing=false;return}achShowing=true;const id=achQueue.shift();if(isMobileUI()){mtoast('Achievement: '+EGGS[id][0]);setTimeout(showNextAch,1200);return;}
+document.getElementById('achName').textContent='🏆 '+EGGS[id][0];
+document.getElementById('achProg').textContent=EGGS[id][1]+' • '+eggFound.length+'/'+Object.keys(EGGS).length+' found';
+document.getElementById('achFill').style.width=(eggFound.length/Object.keys(EGGS).length*100)+'%';
+t.classList.add('show');eggBeep();clearTimeout(achT);achT=setTimeout(()=>{t.classList.remove('show');setTimeout(showNextAch,450)},2600);setTimeout(()=>{if(t.classList.contains('show')){t.classList.remove('show');setTimeout(showNextAch,450)}},10000)}
+function unlockEgg(id){if(eggFound.indexOf(id)>=0||!EGGS[id])return;eggFound.push(id);try{localStorage.setItem(eggKey(),JSON.stringify(eggFound))}catch(e){}
+achQueue.push(id);checkMs();if(!achShowing)showNextAch()}
+function dismissAch(){const t=document.getElementById('achieve');clearTimeout(achT);t.classList.remove('show');setTimeout(showNextAch,200)}
+document.getElementById('achieve').addEventListener('click',dismissAch);
+document.getElementById('achClose').addEventListener('click',e=>{e.stopPropagation();dismissAch()});
+document.getElementById('playerClose').onclick=e=>{e.stopPropagation();document.getElementById('player').classList.remove('open')};
+document.getElementById('themeClose').onclick=e=>{e.stopPropagation();document.getElementById('themePanel').classList.remove('open')};
+function isMobileUI(){return matchMedia('(max-width:640px)').matches||('ontouchstart' in window&&innerWidth<900)}
+let mtoastT=null;
+function mtoast(msg){const el=document.getElementById('mtoast');if(!el)return;el.textContent=msg;el.classList.add('show');clearTimeout(mtoastT);mtoastT=setTimeout(()=>el.classList.remove('show'),3000)}
+document.getElementById('achieve').addEventListener('touchstart',dismissAch,{passive:true});
+(function(){const seq=['arrowup','arrowup','arrowdown','arrowdown','arrowleft','arrowright','arrowleft','arrowright','b','a'];let p=0;addEventListener('keydown',e=>{const k=e.key.toLowerCase();p=(k===seq[p])?p+1:(k===seq[0]?1:0);if(p===seq.length){p=0;unlockEgg('konami')}})})();
+(function(){let c=0;const l=document.querySelector('.logo');if(l)l.addEventListener('click',()=>{if(++c>=25)unlockEgg('logo')})})();
+(function(){let c=0;const v=document.querySelector('.vinyl');if(v)v.addEventListener('click',()=>{if(++c>=20)unlockEgg('dj')})})();
+
+// egg auto-wiring: clicks, codes, sections, visits
+function clickEgg(sel,n,id){let c=0;const el=document.querySelector(sel);if(el)el.addEventListener('click',()=>{if(++c>=n)unlockEgg(id)})}
+clickEgg('footer',25,'footer');clickEgg('.exp-img',15,'certified');
+let melC=0,styC=0,dlC=0;
+document.getElementById('musicBtn').addEventListener('click',()=>{if(++melC>=5)unlockEgg('melody')});
+document.getElementById('themeBtn').addEventListener('click',()=>{if(++styC>=5)unlockEgg('stylist')});
+document.getElementById('pDl').addEventListener('click',()=>{if(++dlC>=3)unlockEgg('collector')});
+(function(){const words={matrix:'k_matrix',gaurav:'k_gaurav',egg:'k_egg',dev:'k_dev',snake:'k_snake',win:'k_win',lol:'k_lol'};let buf='';addEventListener('keydown',e=>{if(e.target&&e.target.matches&&e.target.matches('input,textarea,select'))return;if(e.key.length!==1)return;buf=(buf+e.key.toLowerCase()).slice(-8);for(const w in words)if(buf.endsWith(w)){unlockEgg(words[w]);buf=''}})})();
+(function(){const map={services:'sec_services',work:'sec_work',hacker:'sec_hacker',aichat:'sec_aichat',checklist:'sec_checklist',game:'sec_game',exp:'sec_exp',contact:'sec_contact'};const io=new IntersectionObserver(es=>{es.forEach(x=>{if(x.isIntersecting)unlockEgg(map[x.target.id])})},{threshold:.35});for(const id in map){const s=document.getElementById(id);if(s)io.observe(s)}})();
+(function(){const h=new Date().getHours();if(h>=0&&h<5)unlockEgg('owl');if(h>=5&&h<8)unlockEgg('earlybird');
+let tot=0;addEventListener('click',()=>{if(++tot>=300)unlockEgg('clicker')});
+let scN=0,scT=0;addEventListener('scroll',()=>{const now=Date.now();if(innerHeight+scrollY>=document.body.scrollHeight-60&&now-scT>2000){scT=now;if(++scN>=3)unlockEgg('scroller')}},{passive:true});
+try{const v=+((localStorage.getItem('gaurav_visits')||0))+1;localStorage.setItem('gaurav_visits',v);if(v>=2)unlockEgg('returning')}catch(e){}})();
+
+// THEME MODES - night / day / sunset / ocean / forest
+function setTheme(t){if(t==='night')document.body.removeAttribute('data-theme');else document.body.setAttribute('data-theme',t);try{localStorage.setItem('gaurav_theme',t)}catch(e){}document.querySelectorAll('.tmode').forEach(b=>b.classList.toggle('active',b.dataset.t===t));document.querySelectorAll('.tdot').forEach(b=>b.classList.toggle('active',b.dataset.t===t));try{let s=JSON.parse(localStorage.getItem('gaurav_themes')||'[]');if(s.indexOf(t)<0){s.push(t);localStorage.setItem('gaurav_themes',JSON.stringify(s));unlockEgg('th_'+t)}if(s.length>=5)unlockEgg('themes')}catch(e){}}
+(function(){let t='night';try{t=localStorage.getItem('gaurav_theme')||'night'}catch(e){}setTheme(t)})();
+document.getElementById('themeBtn').onclick=()=>document.getElementById('themePanel').classList.toggle('open');
+document.querySelectorAll('.tmode').forEach(b=>b.onclick=()=>setTheme(b.dataset.t));
+document.querySelectorAll('.tdot').forEach(b=>b.onclick=()=>setTheme(b.dataset.t));
+
+// HACKER MODE - matrix rain + live terminal + scramble title + skill bars
+(function(){
+const mc=document.getElementById('matrix');if(!mc)return;const mg=mc.getContext('2d');
+function msize(){mc.width=mc.parentElement.clientWidth;mc.height=mc.parentElement.clientHeight}
+msize();addEventListener('resize',msize);
+const chars='01<>/{}[]#$%&@01';const fs=14;let cols=0,drops=[];
+function mreset(){cols=Math.max(10,Math.floor(mc.width/fs));drops=[];for(let i=0;i<cols;i++)drops.push(Math.random()*-40)}
+mreset();
+setInterval(()=>{if(document.hidden)return;if(Math.abs(mc.width-mc.parentElement.clientWidth)>4){msize();mreset()}
+mg.fillStyle='rgba(2,6,4,.14)';mg.fillRect(0,0,mc.width,mc.height);mg.font=fs+'px monospace';
+for(let i=0;i<cols;i++){const ch=chars[Math.floor(Math.random()*chars.length)];mg.fillStyle=Math.random()>.92?'#d6ffe2':'#00ff88';mg.fillText(ch,i*fs,drops[i]*fs);if(drops[i]*fs>mc.height&&Math.random()>.976)drops[i]=0;drops[i]++}},70);
+const lines=['> whoami','gaurav_mudaliar — full-stack developer','> scan portfolio','40+ projects found • 0 errors 😎','> npm run build-future','+ Shopify + WordPress + AI + Apps','> ./hire-me --now','ACCESS GRANTED — welcome aboard! 🚀'];
+const tt=document.getElementById('termText');let li2=0,ch2=0,out2='';
+function ttype(){if(!tt)return;if(li2>=lines.length){setTimeout(()=>{li2=0;ch2=0;out2='';tt.textContent='';ttype()},4500);return}
+const line=lines[li2];ch2++;tt.textContent=out2+line.slice(0,ch2);
+if(ch2>=line.length){out2+=line+'\n';li2++;ch2=0;setTimeout(ttype,420)}else setTimeout(ttype,26)}
+ttype();
+const ht=document.getElementById('hackTitle'),final='HACKER MODE',gl='!<>-_/[]{}=+*^?#';
+function scramble(){let it=0;const iv=setInterval(()=>{ht.textContent=final.split('').map((c,i)=>i<it?c:(c===' '?' ':gl[Math.floor(Math.random()*gl.length)])).join('');if(++it>final.length)clearInterval(iv)},55)}
+const hb=document.getElementById('hacker');
+new IntersectionObserver(es=>{if(es[0].isIntersecting){scramble();document.querySelectorAll('.hbar i').forEach(b=>b.style.width=b.dataset.w+'%')}} ,{threshold:.25}).observe(hb);
+})();
+
+// AI ASSISTANT - free public AI, chat + image, no key needed
+(function(){
+const box=document.getElementById('aiMsgs'),inp=document.getElementById('aiIn');if(!box||!inp)return;
+let mode='chat';
+const SYS="You are Matrix, a smart AI assistant like ChatGPT, living on Gaurav Mudaliar's portfolio website. You can do everything ChatGPT does: answer any question, write and debug code, write essays, bios and captions, give business and life advice, explain topics simply, brainstorm ideas. Be helpful and friendly, Hinglish allowed, use short paragraphs. If asked who made you or about this site, say you run on free public AI inside Gaurav's portfolio (Gaurav: full-stack developer, 5 years, Shopify/WordPress/apps/AI, email gauravmudaliar@gmail.com, phone 9032732806).";
+const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+function addMsg(who,html){const d=document.createElement('div');d.className='msg '+who;d.innerHTML=html;box.appendChild(d);box.scrollTop=box.scrollHeight;return d}
+function setMode(m){mode=m;document.getElementById('mChat').classList.toggle('active',m==='chat');document.getElementById('mImg').classList.toggle('active',m==='img');document.getElementById('aiHint').textContent=m==='chat'?'Ask anything!':'Describe karo, image ban jayegi 🎨';inp.placeholder=m==='chat'?'Type here... (Enter = send)':'e.g. neon tiger logo, dark background...'}
+document.getElementById('mChat').onclick=()=>setMode('chat');
+document.getElementById('mImg').onclick=()=>setMode('img');
+async function aiText(p){try{const r=await fetch('https://text.pollinations.ai/',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'openai',messages:[{role:'system',content:SYS},{role:'user',content:p}]})});if(!r.ok)throw 0;return await r.text()}catch(e){const r2=await fetch('https://text.pollinations.ai/'+encodeURIComponent(p));if(!r2.ok)throw 0;return await r2.text()}}
+async function send(){const p=inp.value.trim();if(!p)return;inp.value='';if(mode==='chat'){window._tc=(window._tc||0)+1;if(window._tc>=5)unlockEgg('talkative')}
+if(mode==='img'){addMsg('user','🎨 '+esc(p));window._ac=(window._ac||0)+1;if(window._ac>=3)unlockEgg('artist');const b=addMsg('bot','<i>Image ban rahi hai... ⏳ (10-20 sec lag sakte hain)</i>');
+const url='https://image.pollinations.ai/prompt/'+encodeURIComponent(p)+'?width=768&height=768&nologo=true&seed='+Math.floor(Math.random()*999999);
+const img=new Image();img.onload=()=>{b.innerHTML='Lo ban gayi! 🎨<br><img src="'+url+'" alt="ai generated image"><br><a href="'+url+'" target="_blank" rel="noopener">🔍 Open full / download</a>';box.scrollTop=box.scrollHeight};
+img.onerror=()=>{b.innerHTML='❌ Image nahi bani — net check karke retry karo'};img.src=url;return}
+addMsg('user',esc(p));const b=addMsg('bot','<i>typing... ✍️</i>');
+try{const t=await aiText(p);b.innerHTML=esc(t).replace(/\n/g,'<br>');box.scrollTop=box.scrollHeight}catch(e){b.innerHTML='❌ AI busy hai — thodi der me retry karo (internet chahiye)'}}
+document.getElementById('aiSend').onclick=send;
+inp.addEventListener('keydown',e=>{if(e.key==='Enter')send()});
+document.querySelectorAll('.chip').forEach(c=>c.onclick=()=>{const t=c.textContent;if(t.toLowerCase().indexOf('generate:')===0)setMode('img');inp.value=t;send()});
+})();
+
+// MINI GAME - BUG FIXER (FIXED for Chrome)
+(function(){
+const cv=document.getElementById('gameCanvas');if(!cv)return;const g=cv.getContext('2d');
+let items=[],parts=[],score=0,time=30,run=false,timer=null,spawn=null,best=0;
+try{best=+(localStorage.getItem('gaurav_best')||0)}catch(e){}
+document.getElementById('gBest').textContent=best;
+function rs(){
+  const parent=cv.parentElement;let w=parent.clientWidth-48;if(!w||w<200)w=800;
+  cv.width=w;cv.style.width='100%';cv.height=380;
+}
+rs();setTimeout(rs,500);setTimeout(rs,2000);addEventListener('resize',rs);
+function spawnOne(){
+  const w=cv.width||800;const bomb=Math.random()<.18;
+  items.push({x:40+Math.random()*Math.max(100,(w-80)),y:-30,vy:1.6+Math.random()*1.8+(30-time)*.08,r:bomb?26:24,bomb,wob:Math.random()*6});
+}
+function drawBug(o){
+  // glow
+  g.beginPath();g.arc(o.x,o.y,o.r+8,0,Math.PI*2);g.fillStyle=o.bomb?'rgba(255,0,68,.22)':'rgba(0,255,204,.2)';g.fill();
+  const wx=Math.sin(Date.now()/200+o.wob)*4;o.x+=wx*.1;
+  if(o.bomb){
+    // bomb body - vector, always visible
+    g.beginPath();g.arc(o.x,o.y,o.r,0,Math.PI*2);g.fillStyle='#1a1a22';g.fill();
+    g.lineWidth=3;g.strokeStyle='#ff0044';g.stroke();
+    g.fillStyle='#fff';g.font='bold 20px "Segoe UI Emoji","Noto Color Emoji",sans-serif';g.textAlign='center';g.textBaseline='middle';g.fillText('💣',o.x,o.y);
+    // fuse spark
+    g.beginPath();g.arc(o.x+12,o.y-20,4+Math.sin(Date.now()/100)*2,0,Math.PI*2);g.fillStyle='#ffdd00';g.fill();
+  }else{
+    // bug body - vector cockroach, always visible even without emoji font
+    g.strokeStyle='#00ffcc';g.lineWidth=3;
+    for(let l=0;l<3;l++){const yy=o.y-10+l*10;
+      g.beginPath();g.moveTo(o.x-o.r-8,yy);g.lineTo(o.x-o.r+6,yy);g.stroke();
+      g.beginPath();g.moveTo(o.x+o.r+8,yy);g.lineTo(o.x+o.r-6,yy);g.stroke()}
+    g.beginPath();g.ellipse(o.x,o.y,o.r-4,o.r,0,0,Math.PI*2);g.fillStyle='#ff2fb3';g.fill();
+    g.lineWidth=3;g.strokeStyle='#7a0050';g.stroke();
+    g.beginPath();g.moveTo(o.x,o.y-o.r);g.lineTo(o.x,o.y+o.r);g.strokeStyle='rgba(0,0,0,.4)';g.lineWidth=2;g.stroke();
+    // eyes
+    g.beginPath();g.arc(o.x-8,o.y-6,6,0,Math.PI*2);g.arc(o.x+8,o.y-6,6,0,Math.PI*2);g.fillStyle='#fff';g.fill();
+    g.beginPath();g.arc(o.x-8,o.y-6,3,0,Math.PI*2);g.arc(o.x+8,o.y-6,3,0,Math.PI*2);g.fillStyle='#111';g.fill();
+    g.fillStyle='#fff';g.font='bold 13px sans-serif';g.textAlign='center';g.fillText('BUG',o.x,o.y+12);
+  }
+}
+function drawIdle(){
+  g.fillStyle='rgba(255,255,255,.8)';g.font='bold 26px Space Grotesk, sans-serif';g.textAlign='center';g.textBaseline='middle';
+  if(!run&&items.length===0){g.fillText('▶ Press START to fix bugs!',cv.width/2,cv.height/2-12);
+  g.font='18px Space Grotesk, sans-serif';g.fillStyle='rgba(0,255,204,.95)';g.fillText('Pink BUG = +10   Black BOMB = -20',cv.width/2,cv.height/2+24)}
+}
+function loop(){
+  g.clearRect(0,0,cv.width,cv.height);
+  const grd=g.createLinearGradient(0,0,0,cv.height);grd.addColorStop(0,'#0d0d28');grd.addColorStop(1,'#050510');
+  g.fillStyle=grd;g.fillRect(0,0,cv.width,cv.height);
+  g.strokeStyle='rgba(0,255,204,.18)';g.lineWidth=1;
+  for(let i=0;i<6;i++){const y=(i*76+(Date.now()/25)%76);g.beginPath();g.moveTo(0,y);g.lineTo(cv.width,y);g.stroke()}
+  drawIdle();
+  items.forEach(o=>{o.y+=o.vy;drawBug(o)});
+  parts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.life-=.03;g.globalAlpha=Math.max(0,p.life);g.fillStyle=p.c;g.beginPath();g.arc(p.x,p.y,3,0,Math.PI*2);g.fill();g.globalAlpha=1});
+  parts=parts.filter(p=>p.life>0);
+  items=items.filter(o=>o.y<cv.height+50);
+  requestAnimationFrame(loop)
+}
+loop();
+function boom(x,y,c){for(let i=0;i<12;i++)parts.push({x,y,vx:(Math.random()-.5)*6,vy:(Math.random()-.5)*6,life:1,c})}
+function hit(px,py){
+  for(let i=items.length-1;i>=0;i--){const o=items[i];
+    if(Math.hypot(o.x-px,o.y-py)<o.r+18){items.splice(i,1);
+      if(o.bomb){score=Math.max(0,score-20);boom(o.x,o.y,'#ff0044');flash('#ff0044')}
+      else{score+=10;boom(o.x,o.y,'#00ffcc');flash('#00ffcc')}
+      document.getElementById('gScore').textContent=score;return true}}
+  return false;
+}
+function flash(c){cv.style.boxShadow=`0 0 40px ${c}`;setTimeout(()=>cv.style.boxShadow='none',180)}
+cv.addEventListener('pointerdown',e=>{
+  const r=cv.getBoundingClientRect();
+  const px=e.clientX-r.left, py=(e.clientY-r.top)*(cv.height/r.height);
+  const sx=cv.width/r.width;hit(px*sx,py);
+});
+document.getElementById('gStart').onclick=function(){
+  rs();
+  if(run)return;run=true;score=0;time=30;items=[];parts=[];
+  document.getElementById('gScore').textContent='0';document.getElementById('gTime').textContent='30';
+  this.textContent='⏸ Playing...';gameSeen('bug');
+  for(let i=0;i<3;i++)spawnOne();
+  spawn=setInterval(spawnOne,500);
+  timer=setInterval(()=>{time--;document.getElementById('gTime').textContent=time;
+    if(time<=0){clearInterval(timer);clearInterval(spawn);run=false;items=[];
+      document.getElementById('gStart').textContent='▶ Play Again';if(score>=50)unlockEgg('bug50');if(score>=100)unlockEgg('bug');if(score>=200)unlockEgg('bug200');
+      if(score>best){best=score;try{localStorage.setItem('gaurav_best',best)}catch(e){}document.getElementById('gBest').textContent=best}
+      alert('Game Over! Score: '+score+' 🐞 bugs fixed!')}},1000)};
+})();
+
+// SNAKE GAME 🐍 - arrows/WASD + swipe + buttons
+(function(){
+const cv=document.getElementById('snakeCanvas');if(!cv)return;const g=cv.getContext('2d');
+const N=20,S=20;let snake,dir,ndir,food,score=0,best=0,run=false,loop=null,speed=140;
+try{best=+(localStorage.getItem('gaurav_snake')||0)}catch(e){}
+document.getElementById('sBest').textContent=best;
+function reset(){snake=[{x:9,y:10},{x:8,y:10},{x:7,y:10}];dir={x:1,y:0};ndir=dir;score=0;document.getElementById('sScore').textContent='0';place()}
+function place(){while(true){const f={x:Math.floor(Math.random()*N),y:Math.floor(Math.random()*N)};if(!snake.some(s=>s.x===f.x&&s.y===f.y)){food=f;return}}}
+function draw(){g.fillStyle='#050510';g.fillRect(0,0,400,400);
+g.strokeStyle='rgba(0,255,204,.07)';g.lineWidth=1;for(let i=0;i<=N;i++){g.beginPath();g.moveTo(i*S+.5,0);g.lineTo(i*S+.5,400);g.stroke();g.beginPath();g.moveTo(0,i*S+.5);g.lineTo(400,i*S+.5);g.stroke()}
+g.font='18px "Segoe UI Emoji","Noto Color Emoji",serif';g.textAlign='center';g.textBaseline='middle';g.fillText('🍎',food.x*S+10,food.y*S+11);
+snake.forEach((s,i)=>{g.fillStyle=i===0?'#00ffcc':'#00aa88';g.fillRect(s.x*S+1,s.y*S+1,S-2,S-2);g.strokeStyle='#003333';g.strokeRect(s.x*S+1.5,s.y*S+1.5,S-3,S-3)});
+if(!run&&score===0&&snake.length===3){g.fillStyle='rgba(255,255,255,.85)';g.font='bold 20px sans-serif';g.fillText('Press START! ▶',200,200)}}
+function step(){dir=ndir;const h={x:snake[0].x+dir.x,y:snake[0].y+dir.y};
+if(h.x<0||h.y<0||h.x>=N||h.y>=N||snake.some(s=>s.x===h.x&&s.y===h.y)){over();return}
+snake.unshift(h);
+if(h.x===food.x&&h.y===food.y){score+=10;document.getElementById('sScore').textContent=score;if(score>best){best=score;try{localStorage.setItem('gaurav_snake',best)}catch(e){}document.getElementById('sBest').textContent=best}place();speed=Math.max(70,speed-4);clearInterval(loop);loop=setInterval(step,speed)}
+else snake.pop();
+draw()}
+function over(){run=false;clearInterval(loop);document.getElementById('sStart').textContent='▶ Play Again';if(score>=30)unlockEgg('snake30');if(score>=50)unlockEgg('snake');if(score>=150)unlockEgg('snake100');g.fillStyle='rgba(0,0,0,.65)';g.fillRect(0,0,400,400);g.fillStyle='#ff2fb3';g.font='bold 26px sans-serif';g.textAlign='center';g.fillText('GAME OVER',200,180);g.fillStyle='#fff';g.font='18px sans-serif';g.fillText('Score: '+score,200,215)}
+document.getElementById('sStart').onclick=()=>{if(run)return;run=true;speed=140;reset();document.getElementById('sStart').textContent='⏸ Playing...';gameSeen('snake');clearInterval(loop);loop=setInterval(step,speed);draw()};
+function turn(x,y){if(!run)return;if(x===-dir.x&&y===-dir.y)return;ndir={x:x,y:y}}
+addEventListener('keydown',e=>{const k=e.key.toLowerCase();const game=(k.indexOf('arrow')===0||k===' '||k==='w'||k==='a'||k==='s'||k==='d');if(game&&run)e.preventDefault();if(!run)return;
+if(k==='arrowup'||k==='w')turn(0,-1);else if(k==='arrowdown'||k==='s')turn(0,1);else if(k==='arrowleft'||k==='a')turn(-1,0);else if(k==='arrowright'||k==='d')turn(1,0)});
+let tx=0,ty=0;
+cv.addEventListener('touchstart',e=>{const t=e.changedTouches[0];tx=t.clientX;ty=t.clientY},{passive:true});
+cv.addEventListener('touchend',e=>{const t=e.changedTouches[0],dx=t.clientX-tx,dy=t.clientY-ty;if(Math.abs(dx)<18&&Math.abs(dy)<18)return;if(Math.abs(dx)>Math.abs(dy))turn(dx>0?1:-1,0);else turn(0,dy>0?1:-1)},{passive:true});
+document.querySelectorAll('.dpad button').forEach(b=>b.onclick=()=>{const d=b.dataset.d;if(d==='up')turn(0,-1);else if(d==='down')turn(0,1);else if(d==='left')turn(-1,0);else turn(1,0)});
+reset();draw();
+})();
+
+// THREE.JS - PRO CHARACTER (downloaded model + premium fallback)
+try{
+const canvas=document.getElementById('hero3d');
+const renderer=new THREE.WebGLRenderer({canvas,alpha:true,antialias:true});
+renderer.setPixelRatio(Math.min(devicePixelRatio,innerWidth<640?1.5:2));
+renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+const scene=new THREE.Scene();
+scene.fog=new THREE.FogExp2(0x07070f,0.045);
+const cam=new THREE.PerspectiveCamera(42,1,0.1,100);cam.position.set(0,1.5,6.8);
+scene.add(new THREE.AmbientLight(0xffffff,.75));
+const key=new THREE.DirectionalLight(0xffffff,1.1);key.position.set(3,6,4);key.castShadow=true;scene.add(key);
+const l1=new THREE.PointLight(0x00ffcc,2.2,20);l1.position.set(-3,3,3);scene.add(l1);
+const l2=new THREE.PointLight(0xff2fb3,2.2,20);l2.position.set(3,2,3);scene.add(l2);
+const l3=new THREE.PointLight(0x8b5cf6,1.6,20);l3.position.set(0,5,-2);scene.add(l3);
+// stage
+const ring=new THREE.Mesh(new THREE.TorusGeometry(1.5,.07,16,70),new THREE.MeshStandardMaterial({color:0x00ffcc,emissive:0x00ffcc,emissiveIntensity:1}));
+ring.rotation.x=Math.PI/2;ring.position.y=-1.25;scene.add(ring);
+const ring2=new THREE.Mesh(new THREE.TorusGeometry(1.75,.03,12,70),new THREE.MeshStandardMaterial({color:0xff2fb3,emissive:0xff2fb3,emissiveIntensity:1}));
+ring2.rotation.x=Math.PI/2;ring2.position.y=-1.24;scene.add(ring2);
+const disc=new THREE.Mesh(new THREE.CircleGeometry(1.5,48),new THREE.MeshBasicMaterial({color:0x8b5cf6,transparent:true,opacity:.22}));
+disc.rotation.x=-Math.PI/2;disc.position.y=-1.24;scene.add(disc);
+const shadow=new THREE.Mesh(new THREE.CircleGeometry(.55,32),new THREE.MeshBasicMaterial({color:0x000000,transparent:true,opacity:.4}));
+shadow.rotation.x=-Math.PI/2;shadow.position.y=-1.23;scene.add(shadow);
+
+let hero=null, mixer=null, clock=new THREE.Clock();
+// premium fallback boy - cute stylised dev
+function buildPremiumBoy(){
+  const b=new THREE.Group();
+  const skin=new THREE.MeshStandardMaterial({color:0xd29a6b,roughness:.5});
+  const hoodie=new THREE.MeshStandardMaterial({color:0x15152b,roughness:.35,metalness:.25});
+  const neon=new THREE.MeshStandardMaterial({color:0x00ffcc,emissive:0x00ffcc,emissiveIntensity:1.2});
+  const pink=new THREE.MeshStandardMaterial({color:0xff2fb3,emissive:0xff2fb3,emissiveIntensity:.9});
+  const jean=new THREE.MeshStandardMaterial({color:0x243b8b,roughness:.6});
+  // shoes
+  [-.22,.22].forEach(x=>{
+    const sh=new THREE.Mesh(new THREE.BoxGeometry(.3,.16,.5),new THREE.MeshStandardMaterial({color:0xffffff,roughness:.3}));sh.position.set(x,-1.12,.06);sh.castShadow=true;b.add(sh);
+    const sole=new THREE.Mesh(new THREE.BoxGeometry(.31,.05,.51),neon);sole.position.set(x,-1.2,.06);b.add(sole);
+  });
+  // legs baggy
+  [-.22,.22].forEach(x=>{const l=new THREE.Mesh(new THREE.CylinderGeometry(.17,.2,.85,18),jean);l.position.set(x,-.62,0);l.castShadow=true;b.add(l)});
+  // hoodie torso oversized
+  const t=new THREE.Mesh(new THREE.CylinderGeometry(.42,.5,1,24),hoodie);t.position.y=.12;t.castShadow=true;b.add(t);
+  const pocket=new THREE.Mesh(new THREE.BoxGeometry(.4,.28,.08),new THREE.MeshStandardMaterial({color:0x0c0c1c}));pocket.position.set(0,-.15,.42);b.add(pocket);
+  const logo=new THREE.Mesh(new THREE.BoxGeometry(.26,.1,.02),neon);logo.position.set(0,.25,.45);b.add(logo);
+  [-.12,.12].forEach(x=>{const s=new THREE.Mesh(new THREE.CylinderGeometry(.025,.025,.3,8),neon);s.position.set(x,.05,.46);b.add(s)});
+  // arms in pockets style
+  const armL=new THREE.Group(),armR=new THREE.Group();
+  [-1,1].forEach((s,i)=>{
+    const a=new THREE.Mesh(new THREE.CylinderGeometry(.12,.13,.7,16),hoodie);a.position.y=-.3;a.castShadow=true;
+    const hand=new THREE.Mesh(new THREE.SphereGeometry(.11,16,16),skin);hand.position.y=-.68;
+    const grp=i===0?armL:armR;grp.add(a);grp.add(hand);grp.position.set(s*.55,.3,0);grp.rotation.z=s*.22;b.add(grp);
+  });
+  // head big cute
+  const headG=new THREE.Group();headG.position.y=1.05;b.add(headG);
+  const head=new THREE.Mesh(new THREE.SphereGeometry(.38,28,28),skin);head.castShadow=true;headG.add(head);
+  // smile eyes (black spheres)
+  [-.13,.13].forEach(x=>{const e=new THREE.Mesh(new THREE.SphereGeometry(.045,12,12),new THREE.MeshBasicMaterial({color:0x111111}));e.position.set(x,.03,.34);headG.add(e)});
+  const smile=new THREE.Mesh(new THREE.TorusGeometry(.1,.02,8,20,Math.PI),new THREE.MeshBasicMaterial({color:0x111111}));smile.position.set(0,-.12,.33);smile.rotation.x=.2;headG.add(smile);
+  // blush
+  [-.2,.2].forEach(x=>{const bl=new THREE.Mesh(new THREE.CircleGeometry(.05,16),new THREE.MeshBasicMaterial({color:0xff7aa2,transparent:true,opacity:.7}));bl.position.set(x,-.06,.335);bl.rotation.y=x>0?.3:-.3;headG.add(bl)});
+  // spiky hair
+  const hairM=new THREE.MeshStandardMaterial({color:0x0d0d14,roughness:.5});
+  for(let i=0;i<7;i++){const sp=new THREE.Mesh(new THREE.ConeGeometry(.09,.28,8),hairM);const a=(i/6-.5)*2.2;sp.position.set(Math.sin(a)*.3,.32+Math.cos(i*1.3)*.05,-.05+Math.cos(a)*.1);sp.rotation.set(-.4,a,0);headG.add(sp)}
+  const cap=new THREE.Mesh(new THREE.SphereGeometry(.39,24,16,0,Math.PI*2,0,Math.PI/2.4),new THREE.MeshStandardMaterial({color:0x00ffcc,emissive:0x00ffcc,emissiveIntensity:.25}));cap.position.y=.06;cap.rotation.x=-.25;headG.add(cap);
+  // visor glasses neon
+  const visor=new THREE.Mesh(new THREE.BoxGeometry(.58,.13,.06),new THREE.MeshStandardMaterial({color:0x00ffcc,emissive:0x00ffcc,emissiveIntensity:.9,transparent:true,opacity:.9}));visor.position.set(0,.03,.36);headG.add(visor);
+  // headphones pro
+  [-.4,.4].forEach(x=>{const cup=new THREE.Mesh(new THREE.CylinderGeometry(.12,.12,.14,20),pink);cup.rotation.z=Math.PI/2;cup.position.set(x,.02,0);headG.add(cup);
+    const ringL=new THREE.Mesh(new THREE.TorusGeometry(.13,.02,8,24),neon);ringL.position.set(x,.02,0);ringL.rotation.y=Math.PI/2;headG.add(ringL)});
+  const band=new THREE.Mesh(new THREE.TorusGeometry(.4,.045,12,32,Math.PI),new THREE.MeshStandardMaterial({color:0x1a1a2e}));band.position.y=.08;headG.add(band);
+  b.userData={headG,armL,armR};
+  return b;
+}
+hero=buildPremiumBoy();scene.add(hero);
+// try download real animated model from Chrome CDN (Xbot) - replaces fallback if net works
+if(window.THREE&&THREE.GLTFLoader){
+  const loader=new THREE.GLTFLoader();
+  const urls=['https://threejs.org/examples/models/gltf/Xbot.glb','https://cdn.jsdelivr.net/npm/three@0.128.0/examples/models/gltf/Xbot.glb'];
+  (function tryLoad(i){
+    if(i>=urls.length)return;
+    loader.load(urls[i],(gltf)=>{
+      try{
+        scene.remove(hero);
+        const m=gltf.scene;m.scale.set(1.5,1.5,1.5);m.position.y=-1.25;
+        m.traverse(o=>{if(o.isMesh){o.castShadow=true}});
+        scene.add(m);hero=m;
+        if(gltf.animations&&gltf.animations.length){
+          mixer=new THREE.AnimationMixer(m);
+          const idle=gltf.animations.find(a=>/idle|agree|head|stand/i.test(a.name))||gltf.animations[0];
+          mixer.clipAction(idle).play();
+        }
+      }catch(e){tryLoad(i+1)}
+    },undefined,()=>tryLoad(i+1));
+  })(0);
+}
+// floating tech shapes
+const floats=[];const geoI=new THREE.IcosahedronGeometry(.14,0),geoB=new THREE.BoxGeometry(.14,.14,.14);
+for(let i=0;i<14;i++){const mt=i%3===0?new THREE.MeshStandardMaterial({color:0x00ffcc,emissive:0x00ffcc,emissiveIntensity:.8}):i%3===1?new THREE.MeshStandardMaterial({color:0xff2fb3,emissive:0xff2fb3,emissiveIntensity:.8}):new THREE.MeshStandardMaterial({color:0x8b5cf6,emissive:0x8b5cf6,emissiveIntensity:.8});
+const m=new THREE.Mesh(i%2?geoI:geoB,mt);m.position.set((Math.random()-.5)*6,(Math.random()-.5)*4+.5,(Math.random()-.5)*2-1);m.userData={s:.5+Math.random()*1.5,o:Math.random()*6};scene.add(m);floats.push(m)}
+function size(){const w=canvas.parentElement.clientWidth,h=canvas.parentElement.clientHeight;renderer.setSize(w,h,false);cam.aspect=w/h;cam.updateProjectionMatrix()}size();addEventListener('resize',size);
+let targetRY=0,targetRX=0,dragging=false,lastAct=0,dragX=0;
+function pointAct(nx,ny){targetRY=nx*1.3;targetRX=ny*.5;lastAct=performance.now()}
+addEventListener('pointermove',e=>{if(e.pointerType==='touch'&&!dragging)return;pointAct((e.clientX/innerWidth-.5),(e.clientY/innerHeight-.5))});
+canvas.style.touchAction='pan-y';
+canvas.addEventListener('pointerdown',e=>{dragging=true;dragX=e.clientX;lastAct=performance.now();try{canvas.setPointerCapture(e.pointerId)}catch(_){}});
+addEventListener('pointerup',()=>dragging=false);
+addEventListener('pointercancel',()=>dragging=false);
+canvas.addEventListener('pointermove',e=>{if(!dragging)return;targetRY+=(e.clientX-dragX)*.012;dragX=e.clientX;lastAct=performance.now()});
+(function anim(){requestAnimationFrame(anim);if(document.hidden)return;const dt=Math.min(clock.getDelta(),.05),t=clock.elapsedTime;
+if(mixer)mixer.update(dt);
+if(hero){hero.position.y=Math.sin(t*2)*.07;
+if(!dragging&&performance.now()-lastAct>3500)targetRY=Math.sin(t*.45)*.6;
+hero.rotation.y+=(targetRY-hero.rotation.y)*.08;hero.rotation.x+=(targetRX-hero.rotation.x)*.06;
+if(hero.userData.headG){hero.userData.headG.rotation.y=Math.sin(t*1.4)*.3;hero.userData.headG.position.y=1.05+Math.sin(t*2.2)*.03}
+if(hero.userData.armL){hero.userData.armL.rotation.x=Math.sin(t*2)*.15;hero.userData.armR.rotation.x=-Math.sin(t*2)*.15}}
+ring.rotation.z+=.012;ring2.rotation.z-=.008;disc.material.opacity=.18+Math.sin(t*2)*.06;
+floats.forEach(c=>{c.rotation.x+=.03*c.userData.s;c.rotation.y+=.035;if(c.userData.baseY===undefined)c.userData.baseY=c.position.y;c.position.y=c.userData.baseY+Math.sin(t*c.userData.s+c.userData.o)*.4;const sc=1+Math.sin(t*2.2+c.userData.o)*.2;c.scale.set(sc,sc,sc)});
+renderer.render(scene,cam)})();
+}catch(e){console.log('3d off',e)}
+</script>
+</body>
+</html>
